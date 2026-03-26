@@ -1,0 +1,66 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model ArticleRecord {
+  id                 String                 @id @default(cuid())
+  title              String
+  description        String?
+  url                String                 @unique
+  imageUrl           String?
+  sourceName         String
+  sourceDomain       String?
+  category           String?
+  country            String?
+  publishedAt        DateTime?
+  verdict            String
+  credibilityScore   Float
+  reason             String?
+  extractedClaim     String?
+  corroborationCount Int                    @default(1)
+  factCheckTitle     String?
+  factCheckUrl       String?
+  factCheckRating    String?
+  createdAt          DateTime               @default(now())
+  updatedAt          DateTime               @updatedAt
+
+  feedbacks          VerificationFeedback[]
+
+  @@index([sourceDomain])
+  @@index([category])
+  @@index([country])
+  @@index([publishedAt])
+  @@index([verdict])
+  @@index([createdAt])
+  @@index([credibilityScore])
+}
+
+model VerificationFeedback {
+  id         String        @id @default(cuid())
+  articleUrl String
+  feedback   String
+  note       String?
+  createdAt  DateTime      @default(now())
+
+  article    ArticleRecord @relation(fields: [articleUrl], references: [url], onDelete: Cascade)
+
+  @@index([articleUrl])
+  @@index([createdAt])
+  @@unique([articleUrl, feedback, note])
+}
+
+model AppConfig {
+  id                  String   @id @default(cuid())
+  trustedDomains      String   @default("reuters.com,apnews.com,bbc.com,thehindu.com,indianexpress.com")
+  blockedDomains      String   @default("")
+  likelyTrueThreshold Float    @default(0.72)
+  misleadingThreshold Float    @default(0.42)
+  autoSaveArticles    Boolean  @default(true)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+}

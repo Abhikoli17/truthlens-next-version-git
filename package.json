@@ -1,0 +1,32 @@
+{
+  "name": "truthlens-next-version",
+  "version": "2.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -H 0.0.0.0",
+    "build": "prisma generate && next build",
+    "start": "next start",
+    "lint": "next lint",
+    "prisma:generate": "prisma generate",
+    "prisma:push": "prisma db push",
+    "seed": "node prisma/seed.js"
+  },
+  "dependencies": {
+    "@prisma/client": "6.7.0",
+    "bcryptjs": "2.4.3",
+    "clsx": "2.1.1",
+    "next": "14.2.35",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "4.2.2",
+    "@types/node": "22.10.2",
+    "@types/react": "18.3.12",
+    "@types/react-dom": "18.3.1",
+    "postcss": "8.5.8",
+    "prisma": "6.7.0",
+    "tailwindcss": "4.2.2",
+    "typescript": "5.6.3"
+  }
+}
