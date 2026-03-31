@@ -88,7 +88,12 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(analysis);
   } catch (error) {
-    const message = error instanceof Error ? error.message : "Analysis failed.";
-    return NextResponse.json({ error: message }, { status: 500 });
-  }
+  console.error("ANALYZE_ROUTE_ERROR:", error);
+  return NextResponse.json(
+    {
+      error: "Analysis failed",
+      details: error instanceof Error ? error.message : "Unknown error",
+    },
+    { status: 500 }
+  );
 }
